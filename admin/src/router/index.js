@@ -67,13 +67,13 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/museum',
     children: [
       {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        path: 'museum',
+        component: () => import('@/views/museum/index'),
+        name: 'Museum',
+        meta: { title: '展馆管理', affix: true }
       }
     ]
   }
@@ -84,7 +84,6 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
- 
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
