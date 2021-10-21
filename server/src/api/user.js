@@ -87,16 +87,14 @@ router.post('/signup', [
     }
 )
 
-router.post(
-    "/login",
-    [
-        check("username", "Please enter a valid userName")
-            .not()
-            .isEmpty(),
-        check("password", "Please enter a valid password").isLength({
-            min: 6
-        })
-    ],
+router.post("/login", [
+    check("username", "Please enter a valid userName")
+        .not()
+        .isEmpty(),
+    check("password", "Please enter a valid password").isLength({
+        min: 6
+    })
+],
     async (req, res) => {
         const errors = validationResult(req);
 
@@ -118,14 +116,14 @@ router.post(
                 userName
             });
             if (!user)
-                return res.status(400).json({
+                return res.send({
                     message: "User Not Exist"
                 });
 
             console.log(passWord, 'passWord::::::::::');
             const isMatch = await bcrypt.compare(passWord, user.passWord);
             if (!isMatch)
-                return res.status(400).json({
+                return res.send({
                     message: "Incorrect Password !"
                 });
 
@@ -142,23 +140,43 @@ router.post(
             },
                 (err, token) => {
                     if (err) throw err;
-                    res.status(200).json({
-                        token,
-                        data: {
-                            id: user._id,
-                            userName: user.userName
-                        },
-                        msg: 'Login successful!'
+                    res.send({
+                        code: 20000,
+                        data: { token }
                     });
                 }
             );
         } catch (e) {
             console.error(e);
-            res.status(500).json({
+            res.send({
                 message: "Server Error"
             });
         }
     }
 )
+
+router.get('/info', auth, async (req, res) => {
+    const id = req.user.id;
+    try {
+        const result = await User.findById(id)
+        if (!result)
+            return res.send({
+                message: "User Not Exist"
+            });
+        res.send(
+            {
+                code: 20000,
+                data: {
+                    roles: ['admin'],
+                    introduction: 'I am a super administrator',
+                    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+                    name: 'Super Admin'
+                }
+            }
+        )
+    } catch (error) {
+        res.send('error msg')
+    }
+})
 
 module.exports = router

@@ -2,7 +2,7 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
-  const token = req.header("token");
+  const token = req.header("X-Token");
   if (!token) return res.status(401).json({ message: "Auth Error, Please login" });
 
   try {

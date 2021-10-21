@@ -15,6 +15,10 @@ npm install
 
 npm run dev
 
+npm install -g supervisor --save
+
+supervisor i node_modules app.js
+
 ```
 
 ### Example API
