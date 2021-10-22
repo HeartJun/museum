@@ -1,10 +1,11 @@
 <template>
   <div class="page">
+    <common-header :currentPage.sync="currentPage"></common-header>
     <mv-full-page
       :isPointer="true"
       pointerPos="right"
       :isV="isV"
-      :pages="4"
+      :pages="bgArr.length"
       :page.sync="currentPage"
       :bgArr="bgArr"
       :isCache="false"
@@ -14,36 +15,49 @@
         delay: '0s', // 动画延迟
       }"
     >
-      <template #page1> 页面1 </template>
-
-      <template #page2>
-        <div class="page2">页面2</div>
+      <template
+        v-slot:[dynamicSlotName+(index+1)]
+        v-for="(item, index) in items"
+      >
+        <div :class="`page${index + 1}`" :key="index">
+          <!-- {{ `${item.title}` }} -->
+          <div class="footer">
+            <div class="div">进入</div>
+          </div>
+        </div>
       </template>
-
-      <template #page3>
-        <div class="page3">页面3</div>
-      </template>
-
-      <template #page4> 页面4 </template>
     </mv-full-page>
   </div>
 </template>
 
 <script>
+import CommonHeader from "../components/commonHeader";
 import { webUrl } from "../../static/js/public.js";
 export default {
   data() {
     return {
       items: [],
+      dynamicSlotName: "page",
       isV: true,
       currentPage: 1,
-      bgArr: ["#4FD7F9", "orange", "pink", "green"],
+      bgArr: [{}],
     };
   },
-  components: {},
+  components: { CommonHeader },
   created() {
-    this.$axios.post(webUrl + "articleList").then((res) => {
-      this.items = res.data.reverse();
+    this.$axios.get(webUrl + "museum/list").then((res) => {
+      const items = res.data.data.items;
+      let bgArr = [];
+
+      items.forEach((item) => {
+        bgArr.push({
+          isBg: true,
+          src: item.image,
+        });
+      });
+
+      this.items = items;
+      this.bgArr = bgArr;
     });
   },
 };
@@ -112,5 +126,46 @@ export default {
     margin: 0 20px;
     padding: 20px;
   }
+}
+.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  cursor:pointer
+}
+.div {
+  position: relative;
+  width: 100px;
+  height: 173.2px;
+  margin: 50px auto;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+  text-align: center;
+  color: white;
+  font-size: 50px;
+  line-height: 150px;
+  font-weight: bold;
+}
+.div:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  right: 100px;
+  border-width: 86.6px 50px;
+  border-style: solid;
+  border-color: transparent rgba($color: #000000, $alpha: 0.5) transparent transparent;
+}
+.div:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 100px;
+  border-width: 86.6px 50px;
+  border-style: solid;
+  border-color: transparent transparent transparent rgba($color: #000000, $alpha: 0.5);
+  top: 0;
 }
 </style>
