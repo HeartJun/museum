@@ -1,5 +1,5 @@
 //ip
-export const webUrl = '/api/'
+export const webUrl = 'http://localhost:3000/museum/'
 
 
 

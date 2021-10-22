@@ -36,16 +36,9 @@ Vue.use(VueRouter)
 const routes = [
 
   {
-    path: '/',
-    component: CommonLayout,
-    // name:'layout',
-    children: [
-      {
-        path: '',
-        component: Home,
-        name: 'home'
-      }
-    ]
+    path: '',
+    component: Home,
+    name: 'home'
   },
 
   // {
