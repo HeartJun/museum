@@ -150,38 +150,39 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false"
-          >Confirm</el-button
-        >
+        <el-button
+          type="primary"
+          @click="dialogPvVisible = false"
+        >Confirm</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchAll } from "@/api/museum";
-import { fetchList, createItem, updateItem, deleteItem } from "@/api/indexes";
-import { uploadUrl } from "@/api/image";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import { fetchAll } from '@/api/museum'
+import { fetchList, createItem, updateItem, deleteItem } from '@/api/indexes'
+import { uploadUrl } from '@/api/image'
+import waves from '@/directive/waves' // waves directive
+import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: "Indexes",
+  name: 'Indexes',
   components: { Pagination },
   directives: { waves },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "info",
-        deleted: "danger",
-      };
-      return statusMap[status];
+        published: 'success',
+        draft: 'info',
+        deleted: 'danger'
+      }
+      return statusMap[status]
     },
     typeFilter(type) {
-      return calendarTypeKeyValue[type];
-    },
+      return calendarTypeKeyValue[type]
+    }
   },
   data() {
     return {
@@ -193,207 +194,207 @@ export default {
         page: 1,
         limit: 10,
         title: undefined,
-        museumId: undefined,
+        museumId: undefined
       },
       showReviewer: false,
       temp: {
         id: undefined,
-        title: "",
+        title: '',
         museumId: undefined,
-        sort: undefined,
+        sort: undefined
       },
       dialogFormVisible: false,
-      dialogStatus: "",
+      dialogStatus: '',
       textMap: {
-        update: "编辑",
-        create: "添加",
+        update: '编辑',
+        create: '添加'
       },
       dialogPvVisible: false,
       pvData: [],
       rules: {
         title: [
-          { required: true, message: "title is required", trigger: "blur" },
+          { required: true, message: 'title is required', trigger: 'blur' }
         ],
         museumId: [
-          { required: true, message: "museum is required", trigger: "blur" },
+          { required: true, message: 'museum is required', trigger: 'blur' }
         ],
         sort: [
-          { required: true, message: "sort is required", trigger: "blur" },
-        ],
+          { required: true, message: 'sort is required', trigger: 'blur' }
+        ]
       },
       downloadLoading: false,
       uploadUrl: uploadUrl,
-      museums: [],
-    };
+      museums: []
+    }
   },
   created() {
-    this.getMuseum();
-    this.getList();
+    this.getMuseum()
+    this.getList()
   },
   methods: {
     getMuseum() {
       fetchAll().then((response) => {
-        this.museums = response.data;
-      });
+        this.museums = response.data
+      })
     },
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       fetchList(this.listQuery).then((response) => {
-        this.list = response.data.items;
-        this.total = response.data.total;
+        this.list = response.data.items
+        this.total = response.data.total
 
-        this.listLoading = false;
-      });
+        this.listLoading = false
+      })
     },
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
+      this.listQuery.page = 1
+      this.getList()
     },
     handleModifyStatus(row, status) {
       this.$message({
-        message: "操作Success",
-        type: "success",
-      });
-      row.status = status;
+        message: '操作Success',
+        type: 'success'
+      })
+      row.status = status
     },
     sortChange(data) {
-      const { prop, order } = data;
-      if (prop === "id") {
-        this.sortByID(order);
+      const { prop, order } = data
+      if (prop === 'id') {
+        this.sortByID(order)
       }
     },
     sortByID(order) {
-      if (order === "ascending") {
-        this.listQuery.sort = "+id";
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.sort = '-id'
       }
-      this.handleFilter();
+      this.handleFilter()
     },
     resetTemp() {
       this.temp = {
         id: undefined,
-        title: "",
+        title: '',
         museumId: undefined,
-        sort: undefined,
-      };
+        sort: undefined
+      }
     },
     handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = "create";
-      this.dialogFormVisible = true;
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           createItem(this.temp).then(() => {
             // this.list.unshift(this.temp);
-            this.dialogFormVisible = false;
+            this.dialogFormVisible = false
             this.$notify({
-              title: "Success",
-              message: "Created Successfully",
-              type: "success",
-              duration: 2000,
-            });
-            this.getList();
-          });
+              title: 'Success',
+              message: 'Created Successfully',
+              type: 'success',
+              duration: 2000
+            })
+            this.getList()
+          })
         }
-      });
+      })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.dialogStatus = "update";
-      this.dialogFormVisible = true;
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          const tempData = Object.assign({}, this.temp);
+          const tempData = Object.assign({}, this.temp)
           updateItem(tempData).then(() => {
-            const index = this.list.findIndex((v) => v._id === this.temp._id);
+            const index = this.list.findIndex((v) => v._id === this.temp._id)
             // this.list.splice(index, 1, this.temp);
-            this.dialogFormVisible = false;
+            this.dialogFormVisible = false
             this.$notify({
-              title: "Success",
-              message: "Update Successfully",
-              type: "success",
-              duration: 2000,
-            });
-            this.getList();
-          });
+              title: 'Success',
+              message: 'Update Successfully',
+              type: 'success',
+              duration: 2000
+            })
+            this.getList()
+          })
         }
-      });
+      })
     },
     handleDelete(row, index) {
-      this.temp = Object.assign({}, row);
-      this.$confirm("确定要删除吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.temp = Object.assign({}, row)
+      this.$confirm('确定要删除吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       }).then(() => {
-        const tempData = Object.assign({}, this.temp);
+        const tempData = Object.assign({}, this.temp)
         deleteItem(tempData).then(() => {
           this.$notify({
-            title: "Success",
-            message: "Delete Successfully",
-            type: "success",
-            duration: 2000,
-          });
+            title: 'Success',
+            message: 'Delete Successfully',
+            type: 'success',
+            duration: 2000
+          })
           // this.list.splice(index, 1);
-          this.getList();
-        });
-      });
+          this.getList()
+        })
+      })
     },
     handleFetchPv(pv) {
       fetchPv(pv).then((response) => {
-        this.pvData = response.data.pvData;
-        this.dialogPvVisible = true;
-      });
+        this.pvData = response.data.pvData
+        this.dialogPvVisible = true
+      })
     },
     handleDownload() {
-      this.downloadLoading = true;
-      import("@/vendor/Export2Excel").then((excel) => {
-        const tHeader = ["timestamp", "title", "type", "importance", "status"];
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then((excel) => {
+        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
         const filterVal = [
-          "timestamp",
-          "title",
-          "type",
-          "importance",
-          "status",
-        ];
-        const data = this.formatJson(filterVal);
+          'timestamp',
+          'title',
+          'type',
+          'importance',
+          'status'
+        ]
+        const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list",
-        });
-        this.downloadLoading = false;
-      });
+          filename: 'table-list'
+        })
+        this.downloadLoading = false
+      })
     },
     formatJson(filterVal) {
       return this.list.map((v) =>
         filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
+          if (j === 'timestamp') {
+            return parseTime(v[j])
           } else {
-            return v[j];
+            return v[j]
           }
         })
-      );
+      )
     },
-    getSortClass: function (key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}` ? "ascending" : "descending";
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
     },
-    afterUpload: function (res) {
-      this.temp.image = res;
-      console.log(this.temp);
-    },
-  },
-};
+    afterUpload: function(res) {
+      this.temp.image = res
+      console.log(this.temp)
+    }
+  }
+}
 </script>

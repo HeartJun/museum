@@ -86,7 +86,7 @@ export const constantRoutes = [
         path: 'exhibit',
         component: () => import('@/views/exhibit/index'),
         name: 'Exhibit',
-        meta: { title: '展品管理'}
+        meta: { title: '展品管理' }
       }
     ]
   }
