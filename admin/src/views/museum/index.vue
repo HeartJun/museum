@@ -106,7 +106,7 @@
         <el-form-item label="名称" prop="title">
           <el-input v-model="temp.title" />
         </el-form-item>
-        <el-form-item label="图标">
+        <el-form-item label="背景">
           <el-upload
             class="avatar-uploader"
             :action="'/upload'"
