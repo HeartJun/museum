@@ -76,7 +76,44 @@ export const constantRoutes = [
         meta: { title: '展馆管理', affix: true }
       }
     ]
+  },
+  {
+    path: '/exhibit',
+    component: Layout,
+    redirect: '/exhibit',
+    children: [
+      {
+        path: 'exhibit',
+        component: () => import('@/views/exhibit/index'),
+        name: 'Exhibit',
+        meta: { title: '展品管理'}
+      }
+    ]
   }
+  // {
+  //   path: '/indexes',
+  //   component: Layout,
+  //   redirect: '/indexes',
+  //   alwaysShow: true,
+  //   name: 'Indexes',
+  //   meta: {
+  //     title: '展馆索引'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'indexes',
+  //       component: () => import('@/views/indexes/index'),
+  //       name: 'Indexes',
+  //       meta: { title: '索引管理'}
+  //     },
+  //     {
+  //       path: 'details',
+  //       component: () => import('@/views/indexes/details'),
+  //       name: 'IndexesDetails',
+  //       meta: { title: '索引详情'}
+  //     }
+  //   ]
+  // }
 ]
 
 /**

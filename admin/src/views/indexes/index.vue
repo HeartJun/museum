@@ -8,7 +8,20 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-
+      <el-select
+        v-model="listQuery.museumId"
+        placeholder="展馆"
+        clearable
+        class="filter-item"
+        style="width: 200px"
+      >
+        <el-option
+          v-for="item in museums"
+          :key="item._id"
+          :label="item.title"
+          :value="item._id"
+        />
+      </el-select>
       <el-button
         v-waves
         class="filter-item"
@@ -44,9 +57,9 @@
           <span>{{ row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="图片" min-width="200px">
+      <el-table-column label="展馆" min-width="150px">
         <template slot-scope="{ row }">
-          <img :src="row.image" width="200" />
+          <span>{{ row.museumTitle }}</span>
         </template>
       </el-table-column>
       <el-table-column label="排序" min-width="100px">
@@ -96,21 +109,19 @@
         <el-form-item label="名称" prop="title">
           <el-input v-model="temp.title" />
         </el-form-item>
-        <el-form-item label="图片">
-          <el-upload
-            class="avatar-uploader"
-            :action="uploadUrl"
-            :show-file-list="false"
-            :on-success="afterUpload"
+        <el-form-item label="展馆" prop="museumId">
+          <el-select
+            v-model="temp.museumId"
+            class="filter-item"
+            placeholder="请选择展馆"
           >
-            <img
-              v-if="temp.image"
-              :src="temp.image"
-              class="avatar"
-              width="100%"
+            <el-option
+              v-for="item in museums"
+              :key="item._id"
+              :label="item.title"
+              :value="item._id"
             />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+          </el-select>
         </el-form-item>
         <el-form-item label="排序" prop="sort">
           <el-input v-model="temp.sort" />
@@ -148,20 +159,15 @@
 </template>
 
 <script>
-import {
-  fetchList,
-  fetchPv,
-  createItem,
-  updateItem,
-  deleteItem,
-} from "@/api/museum";
+import { fetchAll } from "@/api/museum";
+import { fetchList, createItem, updateItem, deleteItem } from "@/api/indexes";
 import { uploadUrl } from "@/api/image";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 
 export default {
-  name: "Museum",
+  name: "Indexes",
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -187,12 +193,13 @@ export default {
         page: 1,
         limit: 10,
         title: undefined,
+        museumId: undefined,
       },
       showReviewer: false,
       temp: {
         id: undefined,
         title: "",
-        image: "",
+        museumId: undefined,
         sort: undefined,
       },
       dialogFormVisible: false,
@@ -207,18 +214,28 @@ export default {
         title: [
           { required: true, message: "title is required", trigger: "blur" },
         ],
+        museumId: [
+          { required: true, message: "museum is required", trigger: "blur" },
+        ],
         sort: [
           { required: true, message: "sort is required", trigger: "blur" },
         ],
       },
       downloadLoading: false,
       uploadUrl: uploadUrl,
+      museums: [],
     };
   },
   created() {
+    this.getMuseum();
     this.getList();
   },
   methods: {
+    getMuseum() {
+      fetchAll().then((response) => {
+        this.museums = response.data;
+      });
+    },
     getList() {
       this.listLoading = true;
       fetchList(this.listQuery).then((response) => {
@@ -257,7 +274,7 @@ export default {
       this.temp = {
         id: undefined,
         title: "",
-        image: "",
+        museumId: undefined,
         sort: undefined,
       };
     },
@@ -273,7 +290,7 @@ export default {
       this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           createItem(this.temp).then(() => {
-            this.list.unshift(this.temp);
+            // this.list.unshift(this.temp);
             this.dialogFormVisible = false;
             this.$notify({
               title: "Success",
@@ -281,6 +298,7 @@ export default {
               type: "success",
               duration: 2000,
             });
+            this.getList();
           });
         }
       });
@@ -299,7 +317,7 @@ export default {
           const tempData = Object.assign({}, this.temp);
           updateItem(tempData).then(() => {
             const index = this.list.findIndex((v) => v._id === this.temp._id);
-            this.list.splice(index, 1, this.temp);
+            // this.list.splice(index, 1, this.temp);
             this.dialogFormVisible = false;
             this.$notify({
               title: "Success",
@@ -307,6 +325,7 @@ export default {
               type: "success",
               duration: 2000,
             });
+            this.getList();
           });
         }
       });
@@ -325,7 +344,8 @@ export default {
             type: "success",
             duration: 2000,
           });
-          this.list.splice(index, 1);
+          // this.list.splice(index, 1);
+          this.getList();
         });
       });
     },

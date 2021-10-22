@@ -26,91 +26,105 @@ const Signin = r => require.ensure([], () => r(require('@/pages/signin')), 'chun
 // import ArticleList from '@/pages/admin/articleList'
 // import ArticleEdit from '@/pages/admin/articleEdit'
 // import DemoEdit from '@/pages/admin/demoEdit'
-const ArticleList = r => require.ensure([], () => r(require('@/pages/admin/articleList')), 'chunkname3')
-const ArticleEdit = r => require.ensure([], () => r(require('@/pages/admin/articleEdit')), 'chunkname3')
-const DemoEdit = r => require.ensure([], () => r(require('@/pages/admin/demoEdit')), 'chunkname3')
+// const ArticleList = r => require.ensure([], () => r(require('@/pages/admin/articleList')), 'chunkname3')
+// const ArticleEdit = r => require.ensure([], () => r(require('@/pages/admin/articleEdit')), 'chunkname3')
+// const DemoEdit = r => require.ensure([], () => r(require('@/pages/admin/demoEdit')), 'chunkname3')
 //visiter后台
-const VisiterIndex = r => require.ensure([], () => r(require('@/pages/visiter/index')), 'chunkname3')
+// const VisiterIndex = r => require.ensure([], () => r(require('@/pages/visiter/index')), 'chunkname3')
 
 Vue.use(VueRouter)
 const routes = [
+
   {
     path: '/',
     component: CommonLayout,
     // name:'layout',
-    children:[
+    children: [
       {
         path: '',
         component: Home,
-        name:'home'
-      },
-      {
-        path: '/archives',
-        component: Archives,
-        name:'archives',
-      },
-      {
-        path: '/detail/:id',
-        component: Detail,
-      },
-      {
-        path: '/categories',
-        component: Categories,
-        name:'categories'
-      },
-      {
-        path: '/collections',
-        component: Collections,
-        name:'collections'
-      },
-      {
-        path: '/demo',
-        component: Demo,
-        name:'demo'
-      },
-      {
-        path: '/about',
-        component: About,
-        name:'about'
-      },
-      {
-        path: '/visiter',
-        component: VisiterIndex,
-        name:'visiter'
-      },
+        name: 'home'
+      }
     ]
   },
-  {
-    path: '/sign',
-    component: Signin,
-    name:'Signin',
-    alias: '/admin',
-  },
-  {
-    path: '/admin/list',
-    name: 'ArticleList',
-    component: ArticleList
-  },
-  {
-    path: '/admin/edit',
-    name: 'ArticleEdit',
-    component: ArticleEdit
-  },
-  {
-    path: '/admin/edit/:id', 
-    name: 'ArticleUpdate',
-    component: ArticleEdit
-  },
-  {
-    path: '/admin/editt',
-    name: 'DemoEdit',
-    component: DemoEdit
-  },
-  {
-    path: '/admin/editt/:id', 
-    name: 'DemoUpdate',
-    component: DemoEdit
-  }
+
+  // {
+  //   path: '/',
+  //   component: CommonLayout,
+  //   // name:'layout',
+  //   children:[
+  //     {
+  //       path: '',
+  //       component: Home,
+  //       name:'home'
+  //     },
+  // {
+  //   path: '/archives',
+  //   component: Archives,
+  //   name:'archives',
+  // },
+  // {
+  //   path: '/detail/:id',
+  //   component: Detail,
+  // },
+  // {
+  //   path: '/categories',
+  //   component: Categories,
+  //   name:'categories'
+  // },
+  // {
+  //   path: '/collections',
+  //   component: Collections,
+  //   name:'collections'
+  // },
+  // {
+  //   path: '/demo',
+  //   component: Demo,
+  //   name:'demo'
+  // },
+  // {
+  //   path: '/about',
+  //   component: About,
+  //   name:'about'
+  // },
+  // {
+  //   path: '/visiter',
+  //   component: VisiterIndex,
+  //   name:'visiter'
+  // },
+  //   ]
+  // },
+  // {
+  //   path: '/sign',
+  //   component: Signin,
+  //   name:'Signin',
+  //   alias: '/admin',
+  // },
+  // {
+  //   path: '/admin/list',
+  //   name: 'ArticleList',
+  //   component: ArticleList
+  // },
+  // {
+  //   path: '/admin/edit',
+  //   name: 'ArticleEdit',
+  //   component: ArticleEdit
+  // },
+  // {
+  //   path: '/admin/edit/:id', 
+  //   name: 'ArticleUpdate',
+  //   component: ArticleEdit
+  // },
+  // {
+  //   path: '/admin/editt',
+  //   name: 'DemoEdit',
+  //   component: DemoEdit
+  // },
+  // {
+  //   path: '/admin/editt/:id', 
+  //   name: 'DemoUpdate',
+  //   component: DemoEdit
+  // }
 ]
 export default new VueRouter({
   // mode: 'history',

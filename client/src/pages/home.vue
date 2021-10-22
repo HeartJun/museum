@@ -1,117 +1,104 @@
 <template>
   <div class="page">
-      <div class="wrapper">
-        <el-row>
-            <el-col :xs="24" :sm="4" :md="18" :lg="18" :xl="18">
-              <div class="main">
-                <list_home :items="items"></list_home>
-              </div>
-            </el-col>
-            <el-col :xs="0" :sm="4" :md="6" :lg="6" :xl="6">
-              <div class="aside">
-                <div class="card">
-                  <p class="title">ABOUT ME</p>
-                  <img class="pic" src="../../static/img/p1.png" alt="">
-                  <div class="row">
-                    <p>行路有良友，便是捷径。带上我吧，一起去看更大的世界</p>
-                    <div class="icons">
-                      <a href="https://github.com/bestRenekton" target="_blank"><i class="iconfont icon-github"></i></a>
-                      <a href="https://www.zhihu.com/people/yang-pang-zi-40/activities" target="_blank"><i class="iconfont icon-zhihu"></i></a>
-                      <a href="http://music.163.com/#/user/home?id=272667179" target="_blank"><i class="iconfont icon-yinle"></i></a>
-                      <a href="https://weibo.com/u/5746403289?refer_flag=1005055010_&is_all=1" target="_blank"><i class="iconfont icon-weibo"></i></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <p class="title">FRIENDS</p>
-                  <div class="row">
-                    <a class="link" href="https://www.yangyuetao.cn" target="_blank">哈维</a>
-                    <a class="link" href="https://www.yangyuetao.cn" target="_blank">的光和热</a>
-                    <a class="link" href="https://www.yangyuetao.cn" target="_blank">Secret Blog</a>
-                    <a class="link" href="https://www.yangyuetao.cn" target="_blank">Secret Blog</a>
-                    <a class="link" href="https://www.yangyuetao.cn" target="_blank">Secret Blog</a>
-                    <a class="link" href="https://www.yangyuetao.cn" target="_blank">Secret Blog</a>
-                  </div>
-                </div>
-              </div>
-            </el-col>
-        </el-row>
-      </div>
+    <mv-full-page
+      :isPointer="true"
+      pointerPos="right"
+      :isV="isV"
+      :pages="4"
+      :page.sync="currentPage"
+      :bgArr="bgArr"
+      :isCache="false"
+      :transition="{
+        duration: '700ms', // 动画时长
+        timingFun: 'ease', // 动画速度曲线
+        delay: '0s', // 动画延迟
+      }"
+    >
+      <template #page1> 页面1 </template>
+
+      <template #page2>
+        <div class="page2">页面2</div>
+      </template>
+
+      <template #page3>
+        <div class="page3">页面3</div>
+      </template>
+
+      <template #page4> 页面4 </template>
+    </mv-full-page>
   </div>
 </template>
 
 <script>
-import List_home from "../components/list_home"
-import {webUrl} from "../../static/js/public.js"
+import { webUrl } from "../../static/js/public.js";
 export default {
-  data(){
-    return{
-      items:[]
-    }
+  data() {
+    return {
+      items: [],
+      isV: true,
+      currentPage: 1,
+      bgArr: ["#4FD7F9", "orange", "pink", "green"],
+    };
   },
-  components:{
-    List_home,
+  components: {},
+  created() {
+    this.$axios.post(webUrl + "articleList").then((res) => {
+      this.items = res.data.reverse();
+    });
   },
-  created(){
-    this.$axios.post(webUrl+'articleList')
-      .then((res)=>{
-        this.items=res.data.reverse();
-      })
-  }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.main{
+.main {
   background: #f8f8fd;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 30px rgba(10, 10, 0, 0.1) inset;
-  margin:0 10px;
+  margin: 0 10px;
   padding: 10px;
 }
-.aside{
+.aside {
   background: #f8f8fd;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 30px rgba(10, 10, 0, 0.1) inset;
-  .card{
+  .card {
     border-top: 1px solid #eee;
-    .title{
+    .title {
       padding: 10px;
       font-weight: 600;
-      color:#808080;
+      color: #808080;
       margin-bottom: 10px;
     }
-    .pic{
+    .pic {
       width: 100%;
     }
-    .row{
+    .row {
       padding: 0 10px;
-      &>p{
-        color:#bfbfbf;
-        
+      & > p {
+        color: #bfbfbf;
       }
-      .icons{
-        padding:10px 0;
-        .iconfont{
-          transition: all .3s;
+      .icons {
+        padding: 10px 0;
+        .iconfont {
+          transition: all 0.3s;
           margin: 5px;
           color: #000;
           font-size: 20px;
           background-color: rgba(200, 200, 200, 0.3);
           padding: 8px;
           border-radius: 50%;
-          &:hover{            
-            color:#fff;
+          &:hover {
+            color: #fff;
             background-color: rgba(0, 133, 166, 0.8);
-            border-radius: 5px;          
+            border-radius: 5px;
           }
         }
       }
 
-      &>.link{
-        color:#bfbfbf;
+      & > .link {
+        color: #bfbfbf;
         display: inline-block;
         padding: 5px;
-        transition: all .3s;        
-        &:hover{
+        transition: all 0.3s;
+        &:hover {
           color: #0085a1;
         }
       }
@@ -119,9 +106,10 @@ export default {
   }
 }
 
-@media (min-width: 768px) {//pc
-  .main{
-    margin:0 20px;
+@media (min-width: 768px) {
+  //pc
+  .main {
+    margin: 0 20px;
     padding: 20px;
   }
 }

@@ -16,6 +16,10 @@ import 'element-ui/lib/theme-chalk/display.css';
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 
+import 'mv-full-page/lib-dist/mv-full-page.css'
+import MvFullPage from 'mv-full-page'
+
+Vue.use(MvFullPage)
 
 // Vue.use(VueResource)
 Vue.prototype.$axios = axios
