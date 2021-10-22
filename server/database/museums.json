@@ -1,0 +1,23 @@
+[{
+  "_id": {
+    "$oid": "617228156cf97d3eb44425b1"
+  },
+  "createDate": {
+    "$date": "2021-10-22T02:51:23.552Z"
+  },
+  "title": "1号馆",
+  "image": "http://localhost:3000/museum/uploads/3edcbe416a28dcc63bb1a2a07eb9fa37",
+  "sort": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61724b41caf83b3e4c11d45a"
+  },
+  "createDate": {
+    "$date": "2021-10-22T05:22:39.154Z"
+  },
+  "title": "2号馆",
+  "image": "http://localhost:3000/museum/uploads/db6245cbc86c7493657929d932ecfc41",
+  "sort": 2,
+  "__v": 0
+}]
