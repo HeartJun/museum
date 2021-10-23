@@ -1,6 +1,9 @@
 <template>
   <div class="page">
-    <common-header :currentPage.sync="currentPage"></common-header>
+    <common-header
+      :currentPage.sync="currentPage"
+      :items="items"
+    ></common-header>
     <mv-full-page
       :isPointer="true"
       pointerPos="right"
@@ -22,7 +25,7 @@
         <div :class="`page${index + 1}`" :key="index">
           <!-- {{ `${item.title}` }} -->
           <div class="footer">
-            <div class="div">进入</div>
+            <div class="div" @click="toList(item)">进入</div>
           </div>
         </div>
       </template>
@@ -59,6 +62,14 @@ export default {
       this.items = items;
       this.bgArr = bgArr;
     });
+  },
+  methods: {
+    toList: function (item) {
+      console.log(item._id);
+      const id = item._id;
+      this.$store.commit("changeMuseum", id);
+      this.$router.push({ name: "List", params: { id } });
+    },
   },
 };
 </script>
@@ -131,41 +142,56 @@ export default {
   width: 100%;
   position: absolute;
   bottom: 0;
-  cursor:pointer
+  // display: flex;
+  // justify-content:center ;
 }
 .div {
-  position: relative;
-  width: 100px;
-  height: 173.2px;
-  margin: 50px auto;
-  background-color: rgba($color: #000000, $alpha: 0.5);
+  cursor: pointer;
+  background-color: #2d2d2d;
+  opacity: 0.7;
   text-align: center;
   color: white;
-  font-size: 50px;
-  line-height: 150px;
+  font-size: 24px;
+  line-height: 60px;
   font-weight: bold;
+  padding: 0 80px;
 }
-.div:before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 0;
-  height: 0;
-  right: 100px;
-  border-width: 86.6px 50px;
-  border-style: solid;
-  border-color: transparent rgba($color: #000000, $alpha: 0.5) transparent transparent;
+.div:hover {
+  background-color: #242424;
 }
-.div:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 100px;
-  border-width: 86.6px 50px;
-  border-style: solid;
-  border-color: transparent transparent transparent rgba($color: #000000, $alpha: 0.5);
-  top: 0;
-}
+// .div {
+//   position: relative;
+//   width: 100px;
+//   height: 173.2px;
+//   margin: 50px auto;
+//   background-color: rgba($color: #000000, $alpha: 0.5);
+//   text-align: center;
+//   color: white;
+//   font-size: 50px;
+//   line-height: 150px;
+//   font-weight: bold;
+// }
+// .div:before {
+//   content: "";
+//   display: block;
+//   position: absolute;
+//   width: 0;
+//   height: 0;
+//   right: 100px;
+//   border-width: 86.6px 50px;
+//   border-style: solid;
+//   border-color: transparent rgba($color: #000000, $alpha: 0.5) transparent transparent;
+// }
+// .div:after {
+//   content: "";
+//   display: block;
+//   position: absolute;
+//   width: 0;
+//   height: 0;
+//   left: 100px;
+//   border-width: 86.6px 50px;
+//   border-style: solid;
+//   border-color: transparent transparent transparent rgba($color: #000000, $alpha: 0.5);
+//   top: 0;
+// }
 </style>

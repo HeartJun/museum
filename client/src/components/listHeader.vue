@@ -1,19 +1,23 @@
 <template>
   <header>
-    <div class="top">
+    <div>
       <el-row>
         <el-col>
-          <el-menu
-            :default-active="currentPage"
-            class="el-menu-demo hidden-xs-only nav-pc"
-            mode="horizontal"
-            @select="handleSelect"
-            background-color="#2d2d2d"
-            text-color="#9d9d9d"
-            active-text-color="#fff"
+          <div class="button-item left-item" @click="toBack">返回</div>
+          <div class="button-item left-item" @click="toHome">主页</div>
+          <div
+            v-if="showSearch"
+            class="button-item right-item"
+            @click="onSearch"
           >
-              <el-menu-item v-for="item in items" :key="item._id" :index="item.sort" >{{item.title}}</el-menu-item>
-          </el-menu>
+            搜索
+          </div>
+          <el-input
+            v-if="showSearch"
+            class="right-input"
+            v-model="title"
+            placeholder="名称搜索"
+          ></el-input>
         </el-col>
         <el-col :xs="4" :sm="0" :md="0" :lg="0" :xl="0" class="">
           <div class="nav-mob">
@@ -44,13 +48,16 @@
 <script>
 export default {
   props: {
-    currentPage: Number,
-    items: Array,
+    showSearch: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       // activeIndex: '1',
       navMobile: false,
+      title: "",
     };
   },
   methods: {
@@ -62,6 +69,18 @@ export default {
     },
     slideUp() {
       this.navMobile = this.navMobile ? false : true;
+    },
+    toBack() {
+      this.$router.go(-1);
+    },
+    toHome() {
+      this.$router.push("/");
+    },
+    onSearch() {
+      const params = {
+        title: this.title,
+      };
+      this.$emit("onSearch", params);
     },
   },
   // created(){
@@ -86,11 +105,8 @@ export default {
 
 <style lang="scss" scoped>
 header {
-  position: absolute;
-  width: 100%;
-  z-index: 1;
-  background-color: #434760;
-  opacity: 0.7;
+  background-color: #2d2d2d;
+  // opacity: 0.7;
   color: white;
   box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.5);
   margin-bottom: 10px;
@@ -156,6 +172,30 @@ header {
     transform: translateY(-10px);
     opacity: 0;
   }
+}
+.button-item {
+  float: left;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 60px;
+  min-width: 150px;
+  text-align: center;
+}
+.button-item:hover {
+  background: black;
+  cursor: pointer;
+}
+.left-item {
+  float: left;
+}
+.right-item {
+  float: right;
+}
+.right-input {
+  float: right;
+  width: 20%;
+  line-height: 60px;
 }
 @media (min-width: 768px) {
   //pc

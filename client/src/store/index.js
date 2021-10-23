@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     activeIndex: '1',//导航选中
     isSignIn: 0,//0未登录，1admin，2游客
+    museumId:''
   },
   mutations: {
     changeIndex(state, n) {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     },
     changeIsSignIn(state, n) {
       state.isSignIn = n
+    },
+    changeMuseum(state, n) {
+      state.museumId = n
     }
   }
 })

@@ -12,13 +12,15 @@ import VueRouter from 'vue-router'
 // import Detail from '@/pages/detail'
 const CommonLayout = r => require.ensure([], () => r(require('@/components/commonLayout')), 'chunkname1')
 const Home = r => require.ensure([], () => r(require('@/pages/home')), 'chunkname1')
-const Archives = r => require.ensure([], () => r(require('@/pages/archives')), 'chunkname1')
-const Categories = r => require.ensure([], () => r(require('@/pages/categories')), 'chunkname1')
-const Collections = r => require.ensure([], () => r(require('@/pages/collections')), 'chunkname1')
-const Demo = r => require.ensure([], () => r(require('@/pages/demo')), 'chunkname1')
-const About = r => require.ensure([], () => r(require('@/pages/about')), 'chunkname1')
-const Detail = r => require.ensure([], () => r(require('@/pages/detail')), 'chunkname2')
-const Signin = r => require.ensure([], () => r(require('@/pages/signin')), 'chunkname1')
+const List = r => require.ensure([], () => r(require('@/pages/list')), 'chunkname1')
+const Details = r => require.ensure([], () => r(require('@/pages/details')), 'chunkname1')
+// const Archives = r => require.ensure([], () => r(require('@/pages/archives')), 'chunkname1')
+// const Categories = r => require.ensure([], () => r(require('@/pages/categories')), 'chunkname1')
+// const Collections = r => require.ensure([], () => r(require('@/pages/collections')), 'chunkname1')
+// const Demo = r => require.ensure([], () => r(require('@/pages/demo')), 'chunkname1')
+// const About = r => require.ensure([], () => r(require('@/pages/about')), 'chunkname1')
+// const Detail = r => require.ensure([], () => r(require('@/pages/detail')), 'chunkname2')
+// const Signin = r => require.ensure([], () => r(require('@/pages/signin')), 'chunkname1')
 
 
 //admin后台
@@ -40,7 +42,16 @@ const routes = [
     component: Home,
     name: 'home'
   },
-
+  {
+    path: '/list',
+    name: 'List',
+    component: List
+  },
+  {
+    path: '/details',
+    name: 'Details',
+    component: Details
+  },
   // {
   //   path: '/',
   //   component: CommonLayout,

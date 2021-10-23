@@ -150,7 +150,7 @@
         <el-form-item label="介绍">
           <el-input
             v-model="temp.explain"
-            :autosize="{ minRows: 2, maxRows: 10 }"
+            :autosize="{ minRows: 2, maxRows: 8 }"
             type="textarea"
             placeholder="请输入说明文字"
           />

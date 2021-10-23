@@ -82,7 +82,7 @@ router.post('/create', auth, [
 
 router.get('/list', async (req, res) => {
     const { title, museumId, page = 1, limit = 10 } = req.query;
-    console.log(req.query);
+    console.log("query:",req.query);
 
     let query = {};
     if (title)
@@ -98,6 +98,30 @@ router.get('/list', async (req, res) => {
             code: 20000,
             data: {
                 total: total,
+                items: pageList
+            }
+        })
+    } catch (error) {
+        res.send('error msg')
+    }
+})
+
+router.get('/listByClient', async (req, res) => {
+    const { title, museumId } = req.query;
+    console.log("query:",req.query);
+
+    let query = {};
+    if (title)
+        query.title = new RegExp(title);
+    if (museumId)
+        query.museumId = museumId;
+
+    try {
+        const pageList = await Exhibit.find(query).sort({ 'museumId': 1, 'sort': 1 });
+
+        res.send({
+            code: 20000,
+            data: {
                 items: pageList
             }
         })
